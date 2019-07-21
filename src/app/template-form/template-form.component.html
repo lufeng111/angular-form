@@ -1,0 +1,81 @@
+<!--
+  ngForm 指令可以被一个模板本地变量#myForm引用，以便在模板中访问ngForm对象的实例, #myForm="ngForm" 这时候就也可以拿到ngForm创建的对象了，然后在下面
+
+
+ -->
+<!-- <form #myForm="ngForm" action="/regist" method="post" (ngSubmit)="ngSubmit(myForm.value)">
+  用户名：只包含小写字母a-z,大写字母A-Z和数字0-9
+  <div>用户名：<input type="text" #username="ngModel" ngModel name="username" required pattern="[a-zA-Z0-9]+"></div>
+  <div>手机号：<input type="text"></div>
+  <div>邮编：<input type="number"></div>
+  <div>密码：<input type="password"></div>
+  <div>确认密码：<input type="password"></div>
+  <button type="submit">注册</button>
+</form> -->
+<!--
+  1: json 是angular默认提供的一个管道，它会把一个对象转化成一个json格式的字符串输出，在上面的代码里面声明一个叫myForm 的模板变量，通过它来访问ngForm 对象的属性（input框里的value值），
+  比如说myForm.value 中的value是一个javascript对象，他保存着表单里面所有字段的当前值，然后把这个对象传给angular的json管道，把表单中的值显示在页面上,
+  2: 现在在input中输入值并没有反映到下面的对象里，是因为现在input 都没有绑ngModule 指令（模板上标有NgForm指令的form标签会自动发现其标有NgModel 指令的子元素，并将他们的值添加到表单的数据模型中），
+  3： ngForm会拦截标准的HTML表单提交事件，表单提交会导致页面刷新，但是spa单页面应用，页面是永远不会刷新的，所以angular 会阻止他的自动提交，用一个ngSubmit事件来代替它，我们
+  通过事件绑定语法(ngSubmit)="ngSubmit(myForm.value)" 来绑定ngSubmit这个事件，将表单的value 属性传给这个方法，在ts中写出这个方法，打印value的值是一个空对象，是因为这些值没加到数据模型上，要加到数据模型上就需要
+  用到ngModule, 在angular 表单的api中，NgModule指令代表表单中的一个字段，这个指令会隐式的创建一个FormControl 实例来代表字段的数据模型，并用FormControl的类型对象来存储字段的值，
+  需要注意的是： 在标记了ngForm 这个指令的html元素内，使用ngModule指令的时候，是不需要用方括号或者小括号把他括起来的，直接写一个ngModule就可以了，但是需要在添加了ngModel指令的标签内添加一个name属性,这个name的属性的作用，
+  这个name属性的值会成为(ngSubmit)="ngSubmit(myForm.value)" 中value属性所对应对象中一个属性，
+  4： 与ngForm 指令类似，ngModel 指令创建的对象也可以通过一个模板变量来引用，并通过这个模板变量的value属性来访问字段的值，比如说像这样#username，声明一个叫username的模板本地变量，指向ngModel指令#username="ngModel"，
+
+ -->
+<!-- <div>
+  注意：myForm是 本地模板变量#myForm
+  {{myForm.value | json}}
+</div>
+<div>
+  {{username.value | json}}
+</div> -->
+
+
+<!-- ngModelGroup
+  下面代码会看到
+  对象模型里多了一个userInfo对象，name="username" 这个字段username 的值变成了这个对象{ "userInfo": { "username": "" } }的一个属性，形成了一个嵌套的这样的一个关系，这就是ngModelGroup指令的一个作用，
+
+
+-->
+<form #myForm="ngForm" action="/regist" method="post" (ngSubmit)="ngSubmit(myForm.value)">
+  <div ngModelGroup="userInfo">
+    <div>用户名：<input type="text" #username="ngModel" ngModel name="username"></div>
+    <div>手机号：<input type="text"></div>
+  </div>
+
+  <div>邮编：<input type="number"></div>
+  <div>密码：<input type="password"></div>
+  <div>确认密码：<input type="password"></div>
+  <button type="submit">注册</button>
+</form>
+<div>
+    {{myForm.value | json}}
+  </div>
+  <div>
+    {{username.value | json}}
+  </div>
+
+
+
+<!-- 使用ngForm 和上面的效果是一样的 -->
+<!-- <div ngForm>
+  <div>用户名：<input type="text" required pattern="[a-zA-Z0-9]+"></div>
+  <div>手机号：<input type="text"></div>
+  <div>邮编：<input type="number"></div>
+  <div>密码：<input type="password"></div>
+  <div>确认密码：<input type="password"></div>
+  <button type="submit">注册</button>
+</div> -->
+
+<!-- 但是如果明确不希望angular自动的处理表单，在form标签标签上使用 ngNoForm -->
+<!-- <form action="/regist" method="post" ngNoForm>
+  用户名：只包含小写字母a-z,大写字母A-Z和数字0-9
+  <div>用户名：<input type="text" required pattern="[a-zA-Z0-9]+"></div>
+  <div>手机号：<input type="text"></div>
+  <div>邮编：<input type="number"></div>
+  <div>密码：<input type="password"></div>
+  <div>确认密码：<input type="password"></div>
+  <button type="submit">注册</button>
+</form> -->
