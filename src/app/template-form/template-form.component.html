@@ -1,7 +1,18 @@
+<!--模板式表单案例总结-->
+<form #myForm="ngForm" (ngSubmit)="ngSubmit(myForm.value)">
+  <div>用户名：<input ngModel name="username" type="text"></div>
+  <div>手机号：<input ngModel name="mobile" type="number"></div>
+  <!-- 因为 password 是联动的，最后提交的时候也只提交一个password的值-->
+  <div ngModelGroup="passwordsGroup">
+      <div>密码：<input ngModel name="password" type="password"></div>
+      <div>确认密码：<input ngModel name="pconfirm" type="password"></div>
+  </div>
+  <button type="submit">注册</button>
+</form>
+
+
 <!--
   ngForm 指令可以被一个模板本地变量#myForm引用，以便在模板中访问ngForm对象的实例, #myForm="ngForm" 这时候就也可以拿到ngForm创建的对象了，然后在下面
-
-
  -->
 <!-- <form #myForm="ngForm" action="/regist" method="post" (ngSubmit)="ngSubmit(myForm.value)">
   用户名：只包含小写字母a-z,大写字母A-Z和数字0-9
@@ -32,14 +43,11 @@
   {{username.value | json}}
 </div> -->
 
-
 <!-- ngModelGroup
   下面代码会看到
   对象模型里多了一个userInfo对象，name="username" 这个字段username 的值变成了这个对象{ "userInfo": { "username": "" } }的一个属性，形成了一个嵌套的这样的一个关系，这就是ngModelGroup指令的一个作用，
-
-
 -->
-<form #myForm="ngForm" action="/regist" method="post" (ngSubmit)="ngSubmit(myForm.value)">
+<!-- <form #myForm="ngForm" action="/regist" method="post" (ngSubmit)="ngSubmit(myForm.value)">
   <div ngModelGroup="userInfo">
     <div>用户名：<input type="text" #username="ngModel" ngModel name="username"></div>
     <div>手机号：<input type="text"></div>
@@ -55,7 +63,7 @@
   </div>
   <div>
     {{username.value | json}}
-  </div>
+  </div> -->
 
 
 
