@@ -59,7 +59,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
   NgModel
 
-  NgModelGroup
+  NgModelGroup：代表的是表单的一部分，它允许你将表单的字段组织在一起，形成更清晰的层次关系，与ngForm 这个指令类似，NgModelGroup这个指令也会隐式的创建一个FormGroup类的实例，这个实例会在ngForm对象的value属性中表现为一个嵌套的对象，所以NgModelGroup的子属性都会变为嵌套对象的子属性，
 
 
 
